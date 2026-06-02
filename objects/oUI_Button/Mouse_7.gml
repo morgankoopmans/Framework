@@ -1,0 +1,2 @@
+OnClick();
+//oGamemaster.ResumeGame();

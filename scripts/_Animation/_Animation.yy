@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"_Animation",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"_Animation",
+  "parent":{
+    "name":"_Framework",
+    "path":"folders/Scripts/_Framework.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

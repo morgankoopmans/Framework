@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"_TileRaycast",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"_TileRaycast",
+  "parent":{
+    "name":"_Framework",
+    "path":"folders/Scripts/_Framework.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"__ScribbleJrClassBakerExt",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"__ScribbleJrClassBakerExt",
+  "parent":{
+    "name":"Baker",
+    "path":"folders/_Juju/Scribble Jr./(System)/Classes/Baker.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
