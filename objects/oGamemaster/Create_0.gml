@@ -4,8 +4,6 @@ enum GAME_STATE
     PAUSED
 }
 
-ui_pauseLayer = "PauseMenu";
-
 state = GAME_STATE.RUNNING;
 
 function PauseGame()
@@ -13,7 +11,7 @@ function PauseGame()
     // Return if already paused
     if(state == GAME_STATE.PAUSED) return;
     state = GAME_STATE.PAUSED;
-    layer_set_visible(ui_pauseLayer, true);
+    o_ui_manager.Open(UI_SCREEN.PAUSE);
 }
 
 function ResumeGame()
@@ -21,6 +19,5 @@ function ResumeGame()
     // Return if already paused
     if(state == GAME_STATE.RUNNING) return;
     state = GAME_STATE.RUNNING;
-    layer_set_visible(ui_pauseLayer, false);
-    layer_set_visible("SettingsMenu", false);
+    o_ui_manager.CloseAll();
 }

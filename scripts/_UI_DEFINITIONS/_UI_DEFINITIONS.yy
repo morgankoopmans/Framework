@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"_UIHelpers",
+  "%Name":"_UI_DEFINITIONS",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"_UIHelpers",
+  "name":"_UI_DEFINITIONS",
   "parent":{
     "name":"_Framework",
     "path":"folders/Scripts/_Framework.yy",

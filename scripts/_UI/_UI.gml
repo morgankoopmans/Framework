@@ -1,3 +1,5 @@
+// Helpers
+
 function HideFlexpanel(node_id) 
 {
     // hide the flexpanel
