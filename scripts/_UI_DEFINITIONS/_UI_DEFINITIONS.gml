@@ -2,7 +2,7 @@ enum UI_ACTION
 {
     NONE,
     
-    OPEN_SCREEN,
+    PUSH_SCREEN,
     BACK,
     
     RESUME_GAME,
@@ -11,7 +11,7 @@ enum UI_ACTION
     TOGGLE_SETTING,
     ADJUST_SETTING,
     
-    ZOOM_WINDOW
+    CYCLE_WINDOW_SCALE
 }
 
 enum UI_SCREEN
@@ -21,19 +21,5 @@ enum UI_SCREEN
     SETTINGS
 }
 
-enum SETTING_ID
-{
-    NONE,
-    
-    FULLSCREEN,
-    MUSIC_VOLUME,
-    SFX_VOLUME
-}
 
-function _GameSettings() constructor 
-{
-    fullscreen = window_get_fullscreen();
-    
-    music_volume = 1.0;
-    sfx_volume = 1.0;
-}
+

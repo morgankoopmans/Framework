@@ -37,5 +37,3 @@ if(InputPressed(INPUT_VERB.ACCEPT) and instance_exists(focusedWidget))
 {
     focusedWidget.Activate();
 }
-
-ApplyAudioSettings();

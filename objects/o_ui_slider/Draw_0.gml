@@ -2,9 +2,11 @@ var _value = GetValue();
 
 var _handle_x = x + (_value * trackWidth);
 
+draw_self();
+
 
 // Track
-draw_rectangle(x, y, x + trackWidth, y + trackHeight, false);
+//draw_rectangle(x, y, x + trackWidth, y + trackHeight, false);
 
 
 // Handle

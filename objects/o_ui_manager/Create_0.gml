@@ -3,6 +3,10 @@
 pauseLayer = "PauseMenu";
 settingsLayer = "SettingsMenu";
 
+screenStack = [];
+rootBackAction = UI_ACTION.NONE;
+rootBackPayload = 0;
+
 currentScreen = UI_SCREEN.NONE;
 
 settingsUICached = false;
@@ -15,9 +19,15 @@ focusWidgets = [];
 focusIndex = -1;
 focusedWidget = noone;
 
-if(!variable_global_exists("settings"))
+// Helper
+function SetGroupEnabled(_widgets, _interactable)
 {
-    global.settings = new _GameSettings();    
+    for (var _i = 0; _i < array_length(_widgets); _i++)
+    {
+        _widgets[_i].SetEnabled(_interactable);
+    }
+
+    EnsureValidFocus();
 }
 
 #region cache references to UI elements once
@@ -39,70 +49,34 @@ function CacheSettingsUI()
 
 #region settings UI
 
+function ToggleSetting(_settingId)
+{
+    global.settings.Toggle(_settingId);
+    RefreshSettings();
+}
+
 GetSetting = function(_settingId)
 {
-    switch(_settingId)
-    {
-        case SETTING_ID.MUSIC_VOLUME:
-            return global.settings.music_volume; 
-            
-        case SETTING_ID.SFX_VOLUME:
-            return global.settings.sfx_volume;
-    }
-    
-    return 0;
+    return global.settings.Get(_settingId);
 }
 
-// TODO this adjusts audio group directly, should probably go through a controller and properly initilized and saved(pref)
 SetSetting = function(_settingId, _value)
-{
-    _value = clamp(_value, 0, 1);
-    
-    switch (_settingId) 
-    {
-    	case SETTING_ID.MUSIC_VOLUME:
-            global.settings.music_volume = _value;
-            
-            audio_group_set_gain(audiogroup_music, _value, 0);
-            break;
-        
-        case SETTING_ID.SFX_VOLUME:
-            global.settings.sfx_volume = _value;
-            
-            audio_group_set_gain(audiogroup_sfx, _value, 0);
-            break;
-    }
+{ 
+    global.settings.Set(_settingId, _value);
+    RefreshSettings();
 }
 
-AdjustSetting = function(_setting_id, _amount)
+AdjustSetting = function(_settingId, _amount)
 {
-    SetSetting(
-        _setting_id,
-        GetSetting(_setting_id) + _amount
-    );
-}
-
-ApplyAudioSettings = function()
-{
-    audio_group_set_gain(
-        audiogroup_music,
-        global.settings.music_volume,
-        0
-    );
-
-    audio_group_set_gain(
-        audiogroup_sfx,
-        global.settings.sfx_volume,
-        0
-    );
+    SetSetting(_settingId, GetSetting(_settingId) + _amount);
 }
 
 function SetZoomPanelVisible(_visible)
 {
+    if(zoomPanelVisible == _visible) return;
+    
     CacheSettingsUI();
     
-    if(zoomPanelVisible == _visible) return;
-        
     if(_visible)
     {
         ShowFlexpanel(settingsZoomNode);
@@ -113,15 +87,22 @@ function SetZoomPanelVisible(_visible)
     }
     
     zoomPanelVisible = _visible;
+    
+    SetGroupEnabled(
+        [
+            settings_btn_zoom
+        ],
+        _visible
+    );
+    
+    EnsureValidFocus();
 }
 
 function RefreshSettings()
 {
     CacheSettingsUI();
     
-    var _fullscreen = window_get_fullscreen();
-    
-    global.settings.fullscreen = _fullscreen;
+    var _fullscreen = global.settings.Get(SETTING_ID.FULLSCREEN);
     
     settings_chk_fullscreen.checked = _fullscreen;
     
@@ -133,6 +114,29 @@ function RefreshSettings()
 #endregion
 
 #region Focus
+
+IsFocusable = function(_widget)
+{
+    return instance_exists(_widget) and _widget.CanFocus();
+}
+
+FocusWidget = function(_widget)
+{
+    if(!IsFocusable(_widget)) return false;
+    
+    var _index = array_get_index(focusWidgets, _widget);
+    
+    if(_index == -1) return false;
+        
+    if(instance_exists(focusedWidget)) focusedWidget.SetFocused(false);
+   
+    focusIndex = _index;
+    focusedWidget = _widget;
+    
+    focusedWidget.SetFocused(true);
+    
+    return true;
+}
 
 ClearFocus = function()
 {
@@ -170,16 +174,38 @@ SetFocusList = function(_widgets)
     ClearFocus();
     
     focusWidgets = _widgets;
+    focusIndex = -1;
     
-    if(array_length(focusWidgets) > 0)
-    {
-        SetFocusIndex(0);
-    }
+    MoveFocus(1);
 }
 
-MoveFocus = function(_amount)
+function MoveFocus(_direction)
 {
-    SetFocusIndex(focusIndex + _amount);
+    var _count = array_length(focusWidgets);
+
+    if (_count == 0) return;
+
+    for (var _i = 1; _i <= _count; _i++)
+    {
+        var _index = (focusIndex + (_direction * _i) + _count) mod _count;
+
+        var _widget = focusWidgets[_index];
+
+        if (IsFocusable(_widget))
+        {
+            FocusWidget(_widget);
+            return;
+        }
+    }
+    
+    ClearFocus();
+}
+
+function EnsureValidFocus()
+{
+    if (IsFocusable(focusedWidget))return;
+    
+    MoveFocus(1);
 }
 
 #endregion
@@ -196,13 +222,36 @@ function CloseAll()
     currentScreen = UI_SCREEN.NONE;
 }
 
-function Open(_screen)
+function OpenRoot(_screen, _backAction = UI_ACTION.NONE, _backPayload = 0)
 {
-    ClearFocus();   // We need to do this before setting visable, as the layers are also deactivated so widgets hold focused state
+    screenStack = [];
+    
+    rooBackAction = _backAction;
+    rootBackPayload = _backPayload;
+    
+    ShowScreen(_screen);
+}
+
+function PushScreen(_screen)
+{
+    if(currentScreen != UI_SCREEN.NONE)
+    {
+        array_push(screenStack, currentScreen);
+    }
+    
+    ShowScreen(_screen);
+}
+
+function ShowScreen(_screen)
+{
+    ClearFocus();   
     
     layer_set_visible(pauseLayer, _screen == UI_SCREEN.PAUSE);
     
     layer_set_visible(settingsLayer, _screen == UI_SCREEN.SETTINGS);
+    
+    // Add this after creating the layer:
+    // layer_set_visible(main_menu_layer, false);
     
     currentScreen = _screen;
     
@@ -242,36 +291,24 @@ function Open(_screen)
     }
 }
 
-// TODO should probably store a referene to what opened the current screen
-// Example the settings menu is opened by the main menu instead of the pause menu
 function Back()
 {
-    switch(currentScreen)
+    if (array_length(screenStack) > 0)
     {
-        case UI_SCREEN.SETTINGS:
-            Open(UI_SCREEN.PAUSE);
-            break;
-        
-        case UI_SCREEN.PAUSE:
-            oGamemaster.ResumeGame();
-            break;
+        ShowScreen(array_pop(screenStack));
+
+        return;
+    }
+
+    if (rooBackAction != UI_ACTION.NONE)
+    {
+        Dispatch(rooBackAction, rootBackPayload);
     }
 }
 
 #endregion
 
 #region Action routing
-
-function ToggleSetting(_settingId)
-{
-    switch(_settingId)
-    {
-        case SETTING_ID.FULLSCREEN:
-            ToggleFullscreen();
-            RefreshSettings();
-            break;
-    }
-}
 
 function Dispatch(_actionId, _payload = 0)
 {
@@ -283,9 +320,9 @@ function Dispatch(_actionId, _payload = 0)
         }
         break;
 
-        case UI_ACTION.OPEN_SCREEN:
+        case UI_ACTION.PUSH_SCREEN:
         {
-            Open(_payload);
+            PushScreen(_payload);
         }
         break;
 
@@ -307,9 +344,9 @@ function Dispatch(_actionId, _payload = 0)
         }
         break;
 
-        case UI_ACTION.ZOOM_WINDOW:
+        case UI_ACTION.CYCLE_WINDOW_SCALE:
         {
-            ZoomWindow();
+            global.settings.CycleWindowScale();
 
             RefreshSettings();
         }

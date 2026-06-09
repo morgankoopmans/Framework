@@ -1,21 +1,17 @@
 {
   "$GMObject":"",
-  "%Name":"o_ui_button",
+  "%Name":"_init",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"o_ui_button",
+  "name":"_init",
   "overriddenProperties":[],
   "parent":{
-    "name":"Widgets",
-    "path":"folders/Objects/UI/Widgets.yy",
+    "name":"_Framework",
+    "path":"folders/Objects/_Framework.yy",
   },
-  "parentObjectId":{
-    "name":"o_ui_widget",
-    "path":"objects/o_ui_widget/o_ui_widget.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -33,10 +29,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"sUIButton",
-    "path":"sprites/sUIButton/sUIButton.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

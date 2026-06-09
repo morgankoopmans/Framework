@@ -9,6 +9,7 @@ GetValue = function ()
 
 Adjust = function(_direction)
 {
+    audio_play_sound(sfx_ui_click, 100, false);
     o_ui_manager.AdjustSetting(payload, _direction * stepSize);
 }
 
@@ -20,3 +21,6 @@ function SetFromPointer()
     
     o_ui_manager.SetSetting(payload, _value);
 }
+
+trackWidth = sprite_width;
+trackHeight = sprite_height;
