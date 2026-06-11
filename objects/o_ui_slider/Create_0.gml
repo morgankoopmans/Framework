@@ -9,7 +9,8 @@ GetValue = function ()
 
 Adjust = function(_direction)
 {
-    audio_play_sound(sfx_ui_click, 100, false);
+    global.audio.PlayUIAdjust();
+    
     o_ui_manager.AdjustSetting(payload, _direction * stepSize);
 }
 

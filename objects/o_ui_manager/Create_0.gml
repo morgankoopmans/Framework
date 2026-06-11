@@ -127,7 +127,7 @@ function RefreshSettings()
     
     SetZoomPanelVisible(!_fullscreen);
     
-    layer_text_text(settingsTxtWindowScale, "Scale: " + string(global.settings.Get(SETTING_ID.WINDOW_SCALE)) + "/" + string(global.max_window_scale));
+    layer_text_text(settingsTxtWindowScale, "Scale: " + string(global.settings.Get(SETTING_ID.WINDOW_SCALE)) + "/" + string(global.window.GetMaxScale()));
 }
 
 #endregion

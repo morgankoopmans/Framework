@@ -9,7 +9,11 @@ gml_pragma("global", "_Macros()");
 //#macro TARGET_DELTA 1
 //#macro TARGET_FPS 60
 
-#macro TARGET_GAME_HEIGHT 540 //#macro GAME_WIDTH 480
+#macro BASE_WINDOW_WIDTH 960
+#macro BASE_WINDOW_HEIGHT 540 
+
+#macro BASE_GUI_WIDTH 480
+#macro BASE_GUI_HEIGHT 270
 
 // DEBUG
 #macro NO_SPLASHSCREEN 0

@@ -16,8 +16,8 @@ function SettingsService() constructor
     
     // Default values
     // Used on first launch, or whenever a key is missing from INI file
-    fullscreen = false;
-    windowScale = global.window_scale;
+    fullscreen = global.window.IsFullscreen();
+    windowScale = global.window.GetScale();
     
     musicVolume = 1.0;
     sfxVolume = 1.0;
@@ -31,7 +31,7 @@ function SettingsService() constructor
         
         fullscreen = ini_read_real("video", "fullscreen", fullscreen ? 1: 0) > 0.5;
         
-        windowScale = clamp(round(ini_read_real("video", "window_scale", windowScale)), 1, global.max_window_scale);
+        windowScale = clamp(round(ini_read_real("video", "window_scale", windowScale)), 1, global.window.GetMaxScale());
         
         musicVolume = clamp(ini_read_real("audio", "music_volume", musicVolume), 0, 1);
         
@@ -72,12 +72,11 @@ function SettingsService() constructor
     // Apply loaded values
     static ApplyAll = function()
     {
-        ApplyWindowScale(windowScale);
-        ApplyFullscreen(fullscreen);
+        global.window.SetScale(windowScale);
+        global.window.SetFullscreen(fullscreen);
         
-        audio_group_set_gain(audiogroup_music, musicVolume, 0);
-
-        audio_group_set_gain(audiogroup_sfx, sfxVolume, 0);
+        global.audio.ApplyMusicVolume(musicVolume);
+        global.audio.ApplySFXVolume(sfxVolume);
     }
     
     // Read a setting
@@ -109,22 +108,22 @@ function SettingsService() constructor
         {
             case SETTING_ID.FULLSCREEN:
                 fullscreen = _value;
-                ApplyFullscreen(_value);
+                global.window.SetFullscreen(_value);
                 break;
             
             case SETTING_ID.WINDOW_SCALE:
-                windowScale = clamp(round(_value), 1, global.max_window_scale);
-                ApplyWindowScale(windowScale);
+                windowScale = clamp(round(_value), 1, global.window.GetMaxScale());
+                global.window.SetScale(windowScale);
                 break;
             
             case SETTING_ID.MUSIC_VOLUME:
                 musicVolume = clamp(_value, 0, 1);
-                audio_group_set_gain(audiogroup_music, musicVolume, 0);
+                global.audio.ApplyMusicVolume(musicVolume);
                 break;
             
             case SETTING_ID.SFX_VOLUME:
                 sfxVolume = clamp(_value, 0, 1);
-                audio_group_set_gain(audiogroup_sfx, sfxVolume, 0);
+                global.audio.ApplySFXVolume(sfxVolume);
                 break;
             
             default:
@@ -134,6 +133,7 @@ function SettingsService() constructor
         dirty = true;
     }
     
+    // TODO Could probably remove both of these, now that I updated affected systems to recieve a _value
     // Convenience methods used by UI
     
     // Toggle a boolean setting
@@ -143,8 +143,6 @@ function SettingsService() constructor
         {
             case SETTING_ID.FULLSCREEN:
             {
-                ToggleFullscreen();
-                
                 Set(SETTING_ID.FULLSCREEN,!fullscreen);
                 
                 break;
@@ -155,7 +153,7 @@ function SettingsService() constructor
     // Window-specific setting action
     static CycleWindowScale = function()
     {
-        var _next_scale = Wrap(global.window_scale + 1, 1, global.max_window_scale);
+        var _next_scale = Wrap(windowScale + 1, 1, global.window.GetMaxScale());
 
         Set(SETTING_ID.WINDOW_SCALE, _next_scale);
     }

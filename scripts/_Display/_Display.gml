@@ -1,54 +1,103 @@
-function InitWindow() 
+function WindowService(_windowWidth, _windowHeight, _guiWidth, _guiHeight) constructor 
 {
-	global.window_width = 960;
-	global.window_height = 540;
-
-	global.gui_width = 480;
-	global.gui_height = 270;
-
-	if(global.window_width & 1) global.window_width++;
-	if(global.window_height & 1) global.window_height++;
-
-	global.max_window_scale = min(floor(DISPLAY_WIDTH/global.window_width),floor(DISPLAY_HEIGHT/global.window_height));
-
-	global.window_scale = global.max_window_scale;
-	
-	ResizeWindow();
-}
-
-function ResizeWindow() 
-{
-	if(window_get_fullscreen()) {
-		global.window_scale = global.max_window_scale;	
-	}
-	
-	window_set_size(global.window_width * global.window_scale, global.window_height * global.window_scale);
-	surface_resize(application_surface, global.window_width * global.window_scale, global.window_height * global.window_scale);
-	display_set_gui_size(global.gui_width,global.gui_height);
-
-	call_later(1, time_source_units_frames, function() {
-		window_center();
-	});
-}
-
-function ApplyFullscreen(_enabled)
-{
-    window_set_fullscreen(_enabled);
-    ResizeWindow();
-}
-
-function ToggleFullscreen()
-{
-    ApplyFullscreen(!window_get_fullscreen());
-}
-
-function ApplyWindowScale(_scale)
-{
-    global.window_scale = clamp(round(_scale), 1, global.max_window_scale);
-    ResizeWindow();
-}
-
-function ZoomWindow() {
-	var _scale = Wrap(global.window_scale+1, 1, global.max_window_scale);	
-	ApplyWindowScale(_scale);
+    baseWidth = _windowWidth;
+    if(baseWidth & 1) baseWidth++;
+    
+    baseHeight = _windowHeight;
+    if(baseHeight & 1) baseHeight++;
+    
+    guiWidth = _guiWidth;
+    guiHeight = _guiHeight;
+    
+    scale = 1;
+    maxScale = 1;
+    
+    // -----------------------------------------------------
+    // Determine the largest integer scale that fits
+    // on the current display.
+    // -----------------------------------------------------
+    
+    static RefreshMaxScale = function()
+    {
+        maxScale = min(floor(DISPLAY_WIDTH/baseWidth),floor(DISPLAY_HEIGHT/baseHeight));
+        
+        scale = clamp(scale, 1, maxScale);
+    } 
+    
+    // -----------------------------------------------------
+    // Fullscreen
+    // -----------------------------------------------------
+    static SetFullscreen = function(_enabled)
+    {
+        window_set_fullscreen(_enabled);
+        ResizeWindow();
+    }
+    
+    static IsFullscreen = function()
+    {
+        return window_get_fullscreen();
+    }
+    
+    static ToggleFullscreen = function ()
+    {
+        SetFullscreen(!IsFullscreen());
+    }
+    
+    // -----------------------------------------------------
+    // Window scale
+    // -----------------------------------------------------
+    
+    static SetScale = function(_scale)
+    {
+        RefreshMaxScale();
+        
+        scale = clamp(round(_scale), 1, maxScale);
+        
+        ResizeWindow();
+    }
+    
+    static GetScale = function()
+    {
+        return scale;
+    }
+    
+    static GetMaxScale = function()
+    {
+        return maxScale;
+    }
+    
+    static CycleScale = function()
+    { 
+        var _scale = Wrap(scale + 1, 1, maxScale);	
+        SetScale(_scale);
+    }
+    
+    // -----------------------------------------------------
+    // Apply window settings
+    // -----------------------------------------------------
+    
+    static ResizeWindow = function()
+    {
+        if(window_get_fullscreen()) {
+       		scale = maxScale;	
+       	}
+       	
+       	window_set_size(baseWidth * scale, baseHeight * scale);
+       	surface_resize(application_surface, baseWidth * scale, baseHeight * scale);
+       	display_set_gui_size(guiWidth, guiHeight);
+       
+       	call_later(1, time_source_units_frames, function() {
+       		window_center();
+       	});
+    }
+    
+    // -----------------------------------------------------
+    // Initial setup
+    // -----------------------------------------------------
+    
+    static Initialize = function()
+    {
+        RefreshMaxScale();
+        SetScale(scale);
+    }
 }
