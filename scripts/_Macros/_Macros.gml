@@ -1,5 +1,7 @@
 gml_pragma("global", "_Macros()");
 
+#macro GAME_NAME "Frameworks"
+
 // #macro config:NAME value	
 
 // Delta 

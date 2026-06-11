@@ -1,1 +1,6 @@
-CloseAll();
+if (!screensBuilt)
+{
+    BuildScreenRegistry();
+    
+    oGamemaster.ShowMainMenu();
+}

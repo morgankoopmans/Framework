@@ -11,14 +11,18 @@ enum UI_ACTION
     TOGGLE_SETTING,
     ADJUST_SETTING,
     
-    CYCLE_WINDOW_SCALE
+    CYCLE_WINDOW_SCALE,
+    
+    START_GAME
 }
 
 enum UI_SCREEN
 {
     NONE,
     PAUSE,
-    SETTINGS
+    SETTINGS,
+    MAIN_MENU,
+    COUNT
 }
 
 

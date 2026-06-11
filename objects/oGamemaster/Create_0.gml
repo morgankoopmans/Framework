@@ -1,14 +1,29 @@
 enum GAME_STATE
 {
+    MENU,
     RUNNING,
     PAUSED
 }
 
-state = GAME_STATE.RUNNING;
+state = GAME_STATE.MENU;
+
+function ShowMainMenu()
+{
+    state = GAME_STATE.MENU;
+    
+    o_ui_manager.OpenRoot(UI_SCREEN.MAIN_MENU);
+}
+
+function StartGame()
+{
+    state = GAME_STATE.RUNNING;
+    
+    o_ui_manager.CloseAll();
+}
 
 function PauseGame()
 {
-    if(state == GAME_STATE.PAUSED) return;
+    if(state != GAME_STATE.RUNNING) return;
         
     state = GAME_STATE.PAUSED;
     
@@ -17,8 +32,7 @@ function PauseGame()
 
 function ResumeGame()
 {
-    // Return if already paused
-    if(state == GAME_STATE.RUNNING) return;
+    if(state != GAME_STATE.RUNNING) return;
         
     state = GAME_STATE.RUNNING;
     

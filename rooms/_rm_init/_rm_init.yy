@@ -15,6 +15,9 @@
     {"name":"settings_btn_back","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"settings_sld_music","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"settings_sld_sfx","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"main_btn_start","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"main_btn_settings","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"main_btn_quit","path":"roomui/RoomUI/RoomUI.yy",},
   ],
   "isDnd":false,
   "layers":[

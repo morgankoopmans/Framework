@@ -1,7 +1,9 @@
-// Button zoom gets focus even while not visible
-
+mainMenuLayer = "MainMenu";
 pauseLayer = "PauseMenu";
 settingsLayer = "SettingsMenu";
+
+screens = [];
+screensBuilt = false;
 
 screenStack = [];
 rootBackAction = UI_ACTION.NONE;
@@ -150,25 +152,6 @@ ClearFocus = function()
     focusedWidget = noone;
 }
 
-SetFocusIndex = function(_index)
-{
-    var _length = array_length(focusWidgets)
-    
-    if(_length == 0) return;
-        
-    if(instance_exists(focusedWidget))
-    {
-        focusedWidget.SetFocused(false);
-    }
-    
-    _index = Wrap(_index, 0, _length - 1);
-    
-    focusIndex = _index;
-    focusedWidget = focusWidgets[focusIndex];
-    
-    focusedWidget.SetFocused(true);
-}
-
 SetFocusList = function(_widgets)
 {
     ClearFocus();
@@ -210,25 +193,99 @@ function EnsureValidFocus()
 
 #endregion
 
+function BuildScreenRegistry()
+{
+    screens = array_create(UI_SCREEN.COUNT);
+    
+    screens[UI_SCREEN.PAUSE] = 
+        new UIScreen(
+            pauseLayer, 
+            [
+                pause_btn_resume, 
+                pause_btn_settings, 
+                pause_btn_exit
+            ]
+        );
+    
+    screens[UI_SCREEN.SETTINGS] = 
+        new UIScreen(
+            settingsLayer, 
+            [
+                settings_chk_fullscreen,
+                settings_btn_zoom,
+                settings_sld_music,
+                settings_sld_sfx,
+                settings_btn_back
+            ],
+            function() {RefreshSettings()},
+            function() {global.settings.SaveIfDirty()}
+        );
+    
+    screens[UI_SCREEN.MAIN_MENU] =
+        new UIScreen(
+            mainMenuLayer,
+            [
+                main_btn_start,
+                main_btn_settings,
+                main_btn_quit
+            ]
+        );  
+    
+    screensBuilt = true;
+}
+
+function GetScreen(_screen)
+{
+    if(_screen <= UI_SCREEN.NONE or _screen >= UI_SCREEN.COUNT)
+    {
+        return undefined;
+    }
+    
+    return screens[_screen];
+}
+
+function HideAllScreens()
+{
+    for(var _screen = UI_SCREEN.NONE + 1; _screen < UI_SCREEN.COUNT; _screen++)
+    {
+        var _entry = screens[_screen];
+        
+        if(!is_struct(_entry))
+        {
+            continue;
+        }
+        
+        layer_set_visible(_entry.layerId, false);
+    }
+}
+
 #region Screen nav
 
 function CloseAll()
 {
-    global.settings.SaveIfDirty();
+    var _current = GetScreen(currentScreen);
+    
+    if(!is_undefined(_current) and !is_undefined(_current.onClose))
+    {
+        _current.onClose();
+    }
     
     ClearFocus();
-    
-    layer_set_visible(pauseLayer, false);
-    layer_set_visible(settingsLayer, false);
+    HideAllScreens();
     
     currentScreen = UI_SCREEN.NONE;
+    
+    screenStack = [];
+    
+    rootBackAction = UI_ACTION.NONE;
+    rootBackPayload = 0;
 }
 
 function OpenRoot(_screen, _backAction = UI_ACTION.NONE, _backPayload = 0)
 {
     screenStack = [];
     
-    rooBackAction = _backAction;
+    rootBackAction = _backAction;
     rootBackPayload = _backPayload;
     
     ShowScreen(_screen);
@@ -246,56 +303,31 @@ function PushScreen(_screen)
 
 function ShowScreen(_screen)
 {
-    if (currentScreen == UI_SCREEN.SETTINGS && _screen != UI_SCREEN.SETTINGS)
+    if(currentScreen == _screen) return;
+        
+    var _previous = GetScreen(currentScreen);
+    var _next = GetScreen(_screen);
+    
+    if(!is_undefined(_previous) and !is_undefined(_previous.onClose))
     {
-        global.settings.SaveIfDirty();
+        _previous.onClose();
     }
     
-    ClearFocus();   
-    
-    layer_set_visible(pauseLayer, _screen == UI_SCREEN.PAUSE);
-    
-    layer_set_visible(settingsLayer, _screen == UI_SCREEN.SETTINGS);
-    
-    // Add this after creating the layer:
-    // layer_set_visible(main_menu_layer, false);
+    ClearFocus();
+    HideAllScreens();
     
     currentScreen = _screen;
     
-    switch (_screen)
+    if(is_undefined(_next)) return;
+        
+    layer_set_visible(_next.layerId, true);
+    
+    if(!is_undefined(_next.onOpen))
     {
-        case UI_SCREEN.PAUSE:
-        {
-            SetFocusList(
-            [
-                pause_btn_resume,
-                pause_btn_settings,
-                pause_btn_exit
-            ]);
-        }
-        break;
-
-        case UI_SCREEN.SETTINGS:
-        {
-            RefreshSettings();
-
-            SetFocusList(
-            [
-                settings_chk_fullscreen,
-                settings_btn_zoom,
-                settings_sld_music,
-                settings_sld_sfx,
-                settings_btn_back
-            ]);
-        }
-        break;
-
-        default:
-        {
-            ClearFocus();
-        }
-        break;
+        _next.onOpen();
     }
+    
+    SetFocusList(_next.widgets);
 }
 
 function Back()
@@ -321,6 +353,12 @@ function Dispatch(_actionId, _payload = 0)
 {
     switch (_actionId)
     {
+        case UI_ACTION.START_GAME:
+        {
+            oGamemaster.StartGame();
+        }
+        break;
+        
         case UI_ACTION.RESUME_GAME:
         {
             oGamemaster.ResumeGame();
