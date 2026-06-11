@@ -108,7 +108,7 @@ function RefreshSettings()
     
     SetZoomPanelVisible(!_fullscreen);
     
-    layer_text_text(settingsTxtWindowScale, "Scale: " + string(global.window_scale) + "/" + string(global.max_window_scale));
+    layer_text_text(settingsTxtWindowScale, "Scale: " + string(global.settings.Get(SETTING_ID.WINDOW_SCALE)) + "/" + string(global.max_window_scale));
 }
 
 #endregion
@@ -214,6 +214,8 @@ function EnsureValidFocus()
 
 function CloseAll()
 {
+    global.settings.SaveIfDirty();
+    
     ClearFocus();
     
     layer_set_visible(pauseLayer, false);
@@ -244,6 +246,11 @@ function PushScreen(_screen)
 
 function ShowScreen(_screen)
 {
+    if (currentScreen == UI_SCREEN.SETTINGS && _screen != UI_SCREEN.SETTINGS)
+    {
+        global.settings.SaveIfDirty();
+    }
+    
     ClearFocus();   
     
     layer_set_visible(pauseLayer, _screen == UI_SCREEN.PAUSE);
@@ -300,9 +307,9 @@ function Back()
         return;
     }
 
-    if (rooBackAction != UI_ACTION.NONE)
+    if (rootBackAction != UI_ACTION.NONE)
     {
-        Dispatch(rooBackAction, rootBackPayload);
+        Dispatch(rootBackAction, rootBackPayload);
     }
 }
 
