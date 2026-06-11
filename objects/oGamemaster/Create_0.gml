@@ -32,7 +32,7 @@ function PauseGame()
 
 function ResumeGame()
 {
-    if(state != GAME_STATE.RUNNING) return;
+    if(state != GAME_STATE.PAUSED) return;
         
     state = GAME_STATE.RUNNING;
     

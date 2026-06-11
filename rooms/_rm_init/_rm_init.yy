@@ -9,7 +9,7 @@
     {"name":"inst_1479F72A","path":"rooms/_rm_init/_rm_init.yy",},
     {"name":"pause_btn_resume","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"pause_btn_settings","path":"roomui/RoomUI/RoomUI.yy",},
-    {"name":"pause_btn_exit","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"pause_btn_main_menu","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"settings_chk_fullscreen","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"settings_btn_zoom","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"settings_btn_back","path":"roomui/RoomUI/RoomUI.yy",},
@@ -18,6 +18,8 @@
     {"name":"main_btn_start","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"main_btn_settings","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"main_btn_quit","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"confirm_btn_accept","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"confirm_btn_cancel","path":"roomui/RoomUI/RoomUI.yy",},
   ],
   "isDnd":false,
   "layers":[

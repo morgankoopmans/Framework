@@ -13,7 +13,13 @@ enum UI_ACTION
     
     CYCLE_WINDOW_SCALE,
     
-    START_GAME
+    START_GAME,
+    
+    REQUEST_QUIT,
+    CONFIRM,
+    
+    REQUEST_RETURN_TO_MAIN_MENU,
+    RETURN_TO_MAIN_MENU
 }
 
 enum UI_SCREEN
@@ -22,8 +28,12 @@ enum UI_SCREEN
     PAUSE,
     SETTINGS,
     MAIN_MENU,
+    CONFIRM,
     COUNT
 }
 
-
-
+enum UI_NAV_AXIS
+{
+    VERTICAL,
+    HORIZONTAL
+}

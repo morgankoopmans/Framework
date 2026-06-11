@@ -663,6 +663,7 @@
     {"id":{"name":"sUIButton","path":"sprites/sUIButton/sUIButton.yy",},},
     {"id":{"name":"sUICheck","path":"sprites/sUICheck/sUICheck.yy",},},
     {"id":{"name":"sUICheckbox","path":"sprites/sUICheckbox/sUICheckbox.yy",},},
+    {"id":{"name":"sUIDim","path":"sprites/sUIDim/sUIDim.yy",},},
     {"id":{"name":"sUIPanel","path":"sprites/sUIPanel/sUIPanel.yy",},},
   ],
   "resourceType":"GMProject",

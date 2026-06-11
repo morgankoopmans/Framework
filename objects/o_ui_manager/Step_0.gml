@@ -19,18 +19,35 @@ if(InputPressed(INPUT_VERB.CANCEL))
     exit;
 }
 
-var _vertical = InputOpposingRepeat(INPUT_VERB.UP, INPUT_VERB.DOWN, , 30,120); //InputPressed(INPUT_VERB.DOWN) - InputPressed(INPUT_VERB.UP);// InputOpposingRepeat(INPUT_VERB.UP, INPUT_VERB.DOWN);
+var _screen = GetScreen(currentScreen);
 
-if(_vertical != 0)
+if(!is_undefined(_screen))
 {
-    MoveFocus(_vertical);
-}
-
-var _horizontal = InputOpposingRepeat(INPUT_VERB.LEFT, INPUT_VERB.RIGHT, , 15,120)
-
-if(_horizontal != 0 and instance_exists(focusedWidget))
-{
-    focusedWidget.Adjust(_horizontal);
+    var _vertical = InputOpposingRepeat(INPUT_VERB.UP, INPUT_VERB.DOWN, , 30,120);
+    
+    var _horizontal = InputOpposingRepeat(INPUT_VERB.LEFT, INPUT_VERB.RIGHT, , 15,120);
+    
+    switch (_screen.navigationAxis) 
+    {
+    	case UI_NAV_AXIS.VERTICAL:
+            if(_vertical != 0)
+            {
+                MoveFocus(_vertical);
+            }
+            
+            if(_horizontal != 0 and instance_exists(focusedWidget))
+            {
+                focusedWidget.Adjust(_horizontal);
+            }
+            break;
+        
+        case UI_NAV_AXIS.HORIZONTAL:
+            if (_horizontal != 0)
+            {
+                MoveFocus(_horizontal);
+            }
+            break;
+    }
 }
     
 if(InputPressed(INPUT_VERB.ACCEPT) and instance_exists(focusedWidget))

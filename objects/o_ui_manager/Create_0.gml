@@ -2,6 +2,8 @@ mainMenuLayer = "MainMenu";
 pauseLayer = "PauseMenu";
 settingsLayer = "SettingsMenu";
 
+confirmModalLayer = "ConfirmModal";
+
 screens = [];
 screensBuilt = false;
 
@@ -21,6 +23,12 @@ focusWidgets = [];
 focusIndex = -1;
 focusedWidget = noone;
 
+confirmUICached = false;
+confirmTextMessage = -1;
+
+confirmAction = UI_ACTION.NONE;
+confirmPayload = 0;
+
 // Helper
 function SetGroupEnabled(_widgets, _interactable)
 {
@@ -30,6 +38,15 @@ function SetGroupEnabled(_widgets, _interactable)
     }
 
     EnsureValidFocus();
+}
+
+function CacheConfirmUI()
+{
+    if(confirmUICached) return;
+        
+    confirmTextMessage = layer_text_get_id(confirmModalLayer, "confirm_txt_message");
+    
+    confirmUICached = true;
 }
 
 #region cache references to UI elements once
@@ -203,7 +220,7 @@ function BuildScreenRegistry()
             [
                 pause_btn_resume, 
                 pause_btn_settings, 
-                pause_btn_exit
+                pause_btn_main_menu
             ]
         );
     
@@ -231,6 +248,22 @@ function BuildScreenRegistry()
             ]
         );  
     
+    screens[UI_SCREEN.CONFIRM] = 
+        new UIScreen(
+            confirmModalLayer,
+            [
+                confirm_btn_cancel,
+                confirm_btn_accept
+            ],
+            undefined,
+            function() 
+            {
+                confirmAction = UI_ACTION.NONE;
+                confirmPayload = 0;
+            },
+            UI_NAV_AXIS.HORIZONTAL
+        )
+    
     screensBuilt = true;
 }
 
@@ -257,6 +290,28 @@ function HideAllScreens()
         
         layer_set_visible(_entry.layerId, false);
     }
+}
+
+function OpenConfirm(_message, _action, _payload = 0)
+{
+    CacheConfirmUI();
+    
+    confirmAction = _action;
+    confirmPayload = _payload;
+    
+    layer_text_text(confirmTextMessage, _message);
+    
+    PushScreen(UI_SCREEN.CONFIRM);
+}
+
+function AcceptConfirm()
+{
+    var _action = confirmAction;
+    var _payload = confirmPayload;
+    
+    Back();
+    
+    Dispatch(_action, _payload);
 }
 
 #region Screen nav
@@ -295,7 +350,13 @@ function PushScreen(_screen)
 {
     if(currentScreen != UI_SCREEN.NONE)
     {
-        array_push(screenStack, currentScreen);
+        array_push(
+            screenStack, 
+            {
+                screen: currentScreen,
+                focus: focusedWidget
+            }
+        );
     }
     
     ShowScreen(_screen);
@@ -334,7 +395,11 @@ function Back()
 {
     if (array_length(screenStack) > 0)
     {
-        ShowScreen(array_pop(screenStack));
+        var _previous = array_pop(screenStack);
+        
+        ShowScreen(_previous.screen);
+        
+        FocusWidget(_previous.focus);
 
         return;
     }
@@ -396,6 +461,23 @@ function Dispatch(_actionId, _payload = 0)
             RefreshSettings();
         }
         break;
+    
+        case UI_ACTION.REQUEST_QUIT:
+            OpenConfirm("Quit the game?", UI_ACTION.QUIT_GAME);
+            break;
+        
+        case UI_ACTION.CONFIRM:
+            AcceptConfirm();
+            break;
+        
+        case UI_ACTION.REQUEST_RETURN_TO_MAIN_MENU:
+            OpenConfirm("Return to main menu?\nCurrent progress will be lost.", UI_ACTION.RETURN_TO_MAIN_MENU);
+            break;
+        
+        case UI_ACTION.RETURN_TO_MAIN_MENU:
+        {
+            oGamemaster.ShowMainMenu();
+        }
     }
 }
 
