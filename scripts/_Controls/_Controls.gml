@@ -269,9 +269,23 @@ function ControlsService() constructor
             
             if(!is_struct(_data)) return false;
                 
+            if(!struct_exists(_data, "version") or _data.version != schemaVersion)
+            {
+                ResetDefaults();
+                
+                status = "";
+                
+                return false;
+            }
+            
             if(struct_exists(_data, "keyboard"))
             {
-                InputBindingsImport(false, _data.gamepad, playerIndex);
+                InputBindingsImport(false, _data.keyboard, playerIndex);
+            }
+            
+            if(struct_exists(_data, "gamepad"))
+            {
+                InputBindingsImport(true, _data.gamepad, playerIndex);
             }
             
             dirty = false;
