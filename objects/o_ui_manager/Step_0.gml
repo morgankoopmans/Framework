@@ -1,3 +1,13 @@
+if(global.controls.IsRebinding())
+{
+    if(global.controls.Update())
+    {
+        RefreshControls();
+    }
+    
+    exit;
+}
+
 if(InputPressed(INPUT_VERB.PAUSE))
 {
     if(currentScreen == UI_SCREEN.NONE)

@@ -1,6 +1,7 @@
 mainMenuLayer = "MainMenu";
 pauseLayer = "PauseMenu";
 settingsLayer = "SettingsMenu";
+controlsLayer = "ControlsMenu";
 
 confirmModalLayer = "ConfirmModal";
 
@@ -16,6 +17,10 @@ currentScreen = UI_SCREEN.NONE;
 settingsUICached = false;
 settingsZoomNode = undefined;
 settingsTxtWindowScale = -1;
+
+controlsUICached = false;
+controlsTxtDevice = -1;
+controlsTxtStatus = -1;
 
 zoomPanelVisible = true;
 
@@ -62,6 +67,17 @@ function CacheSettingsUI()
     settingsTxtWindowScale = layer_text_get_id(settingsLayer, "settings_text_window_scale");
     
     settingsUICached = true;
+}
+
+function CacheControlsUI()
+{
+    if(controlsUICached) return;
+        
+    controlsTxtDevice = layer_text_get_id(controlsLayer, "controls_txt_device_value");
+    
+    controlsTxtStatus = layer_text_get_id(controlsLayer, "controls_txt_status");
+    
+    controlsUICached = true;
 }
 
 #endregion
@@ -128,6 +144,26 @@ function RefreshSettings()
     SetZoomPanelVisible(!_fullscreen);
     
     layer_text_text(settingsTxtWindowScale, "Scale: " + string(global.settings.Get(SETTING_ID.WINDOW_SCALE)) + "/" + string(global.window.GetMaxScale()));
+}
+
+#endregion
+
+#region Controls UI
+
+function RefreshControls()
+{
+    CacheControlsUI();
+    
+    layer_text_text(controlsTxtDevice, global.controls.GetViewLabel());
+    
+    layer_text_text(controlsTxtStatus, global.controls.status);
+}
+
+function BeginControlRebind(_verb, _alternate)
+{
+    global.controls.BeginRebind(_verb, _alternate);
+    
+    RefreshControls();
 }
 
 #endregion
@@ -228,14 +264,45 @@ function BuildScreenRegistry()
         new UIScreen(
             settingsLayer, 
             [
-                settings_chk_fullscreen,
-                settings_btn_zoom,
+                settings_btn_controls,
+                
                 settings_sld_music,
                 settings_sld_sfx,
+                
+                settings_chk_fullscreen,
+                settings_btn_zoom,
+                
                 settings_btn_back
             ],
             function() {RefreshSettings()},
             function() {global.settings.SaveIfDirty()}
+        );
+    
+    screens[UI_SCREEN.CONTROLS] =
+        new UIScreen(
+            controlsLayer,
+            [
+                controls_btn_device,
+                
+                controls_bind_up,
+                controls_bind_down,
+                controls_bind_left,
+                controls_bind_right,
+                
+                controls_bind_action,
+                controls_bind_special,
+                controls_bind_map,
+                controls_bind_pause,
+                
+                controls_btn_reset,
+                controls_btn_back
+                
+            ],
+            function() {RefreshControls()},
+            function() {
+                global.controls.CancelRebind();
+                global.controls.SaveIfDirty();
+            }
         );
     
     screens[UI_SCREEN.MAIN_MENU] =
@@ -475,9 +542,25 @@ function Dispatch(_actionId, _payload = 0)
             break;
         
         case UI_ACTION.RETURN_TO_MAIN_MENU:
-        {
             oGamemaster.ShowMainMenu();
-        }
+            break;
+        
+        case UI_ACTION.CYCLE_CONTROL_DEVICE:
+            global.controls.ToggleView();
+            RefreshControls();
+            break;
+        
+        case UI_ACTION.REQUEST_RESET_CONTROLS:
+            OpenConfirm("Reset controls to defaults?", UI_ACTION.RESET_CONTROLS);
+            break;
+        
+        case UI_ACTION.RESET_CONTROLS:
+            global.controls.ResetDefaults();
+            RefreshControls();
+            break;
+            
+            
+            
     }
 }
 

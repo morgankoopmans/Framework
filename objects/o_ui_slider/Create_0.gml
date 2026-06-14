@@ -10,7 +10,6 @@ GetValue = function ()
 Adjust = function(_direction)
 {
     global.audio.PlayUIAdjust();
-    
     o_ui_manager.AdjustSetting(payload, _direction * stepSize);
 }
 

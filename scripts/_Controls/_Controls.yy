@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"_UI",
+  "%Name":"_Controls",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"_UI",
+  "name":"_Controls",
   "parent":{
     "name":"_Framework",
     "path":"folders/Scripts/_Framework.yy",

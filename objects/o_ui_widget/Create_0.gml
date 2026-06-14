@@ -9,6 +9,7 @@ CanFocus = function()
 
 SetFocused = function(_focused)
 {
+    global.audio.PlayUIFocus();
     focused = _focused;
 }
 
@@ -32,10 +33,12 @@ RequestFocus = function()
 
 Activate = function()
 {
-   
+    global.audio.PlayUIAccept(); 
+    o_ui_manager.Dispatch(actionId, payload);
 }
 
 Adjust = function(_amount)
 {
     
 }
+

@@ -1,3 +1,5 @@
+draw_set_font(fntUI_Default);
+
 // Initialize window service
 if(!variable_global_exists("window"))
 {
@@ -18,6 +20,14 @@ if (!variable_global_exists("settings"))
 
     global.settings.Load();
     global.settings.ApplyAll();
+}
+
+// Initialize controls
+if(!variable_global_exists("controls"))
+{
+    global.controls = new ControlsService();
+    
+    global.controls.Load();
 }
 
 room_goto_next();

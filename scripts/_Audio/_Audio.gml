@@ -50,12 +50,17 @@ function AudioService() constructor
     
     static PlayUIAccept = function()
     {
-        return PlaySFX(sfx_ui_blip, 100);
+        return PlaySFX(sfx_ui_accept, 100);
     }
     
     static PlayUIAdjust = function()
     {
-        return PlaySFX(sfx_ui_click, 100);
+        return PlaySFX(sfx_ui_adjust, 100);
+    }
+    
+    static PlayUIFocus = function()
+    {
+        return PlaySFX(sfx_ui_focus, 100);
     }
     
     // -----------------------------------------------------

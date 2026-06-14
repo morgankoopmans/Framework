@@ -1,6 +1,6 @@
 {
   "$GMSound":"v2",
-  "%Name":"sfx_ui_blip",
+  "%Name":"sfx_ui_focus",
   "audioGroupId":{
     "name":"audiogroup_sfx",
     "path":"audiogroups/audiogroup_sfx",
@@ -10,9 +10,9 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":0.04122449,
+  "duration":0.27931973,
   "exportDir":"",
-  "name":"sfx_ui_blip",
+  "name":"sfx_ui_focus",
   "parent":{
     "name":"Sfx",
     "path":"folders/Audio/Sfx.yy",
@@ -21,6 +21,6 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"sfx_ui_blip.wav",
+  "soundFile":"sfx_ui_focus.wav",
   "volume":1.0,
 }

@@ -1,6 +1,6 @@
 {
   "$GMSound":"v2",
-  "%Name":"sfx_ui_click",
+  "%Name":"sfx_ui_adjust",
   "audioGroupId":{
     "name":"audiogroup_sfx",
     "path":"audiogroups/audiogroup_sfx",
@@ -10,9 +10,9 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":0.27931973,
+  "duration":0.06058957,
   "exportDir":"",
-  "name":"sfx_ui_click",
+  "name":"sfx_ui_adjust",
   "parent":{
     "name":"Sfx",
     "path":"folders/Audio/Sfx.yy",
@@ -21,6 +21,6 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"sfx_ui_click.wav",
-  "volume":1.0,
+  "soundFile":"sfx_ui_adjust.wav",
+  "volume":0.35,
 }
