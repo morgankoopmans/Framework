@@ -7,6 +7,12 @@ if(!variable_global_exists("window"))
     global.window.Initialize();
 }
 
+// Initialize input gate
+if(!variable_global_exists("inputGate"))
+{
+    global.inputGate = new InputGate();
+}
+
 // Initialize audio service
 if(!variable_global_exists("audio"))
 {

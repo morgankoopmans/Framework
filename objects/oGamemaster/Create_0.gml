@@ -7,14 +7,19 @@ enum GAME_STATE
 
 state = GAME_STATE.MENU;
 
-function ShowMainMenu()
+// -----------------------------------------------------
+// Imediate methods
+// There do the actual state changes
+// -----------------------------------------------------
+
+function ShowMainMenuImmediate()
 {
     state = GAME_STATE.MENU;
     
     o_ui_manager.OpenRoot(UI_SCREEN.MAIN_MENU);
 }
 
-function StartGame()
+function StartGameImmediate()
 {
     state = GAME_STATE.RUNNING;
     
@@ -24,6 +29,8 @@ function StartGame()
 function PauseGame()
 {
     if(state != GAME_STATE.RUNNING) return;
+        
+    if(variable_global_exists("transition") and global.transition.BlocksInput()) return;
         
     state = GAME_STATE.PAUSED;
     
@@ -37,4 +44,34 @@ function ResumeGame()
     state = GAME_STATE.RUNNING;
     
     o_ui_manager.CloseAll();
+}
+
+
+// -----------------------------------------------------
+// Transitioned requests
+// These are called by UI actions
+// -----------------------------------------------------
+
+function RequestStartGame()
+{
+    if(state != GAME_STATE.MENU) return;
+        
+    global.transition.FadeCallback(
+        function()
+        {
+            oGamemaster.StartGameImmediate();
+        }
+    )
+}
+
+function RequestMainMenu()
+{
+    if(state == GAME_STATE.MENU) return;
+        
+    global.transition.FadeCallback(
+        function()
+        {
+            oGamemaster.ShowMainMenuImmediate();
+        }
+    )
 }

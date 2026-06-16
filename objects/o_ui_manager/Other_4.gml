@@ -2,5 +2,5 @@ if (!screensBuilt)
 {
     BuildScreenRegistry();
     
-    oGamemaster.ShowMainMenu();
+    oGamemaster.ShowMainMenuImmediate();
 }

@@ -487,7 +487,7 @@ function Dispatch(_actionId, _payload = 0)
     {
         case UI_ACTION.START_GAME:
         {
-            oGamemaster.StartGame();
+            oGamemaster.RequestStartGame();
         }
         break;
         
@@ -542,7 +542,7 @@ function Dispatch(_actionId, _payload = 0)
             break;
         
         case UI_ACTION.RETURN_TO_MAIN_MENU:
-            oGamemaster.ShowMainMenu();
+            oGamemaster.RequestMainMenu();
             break;
         
         case UI_ACTION.CYCLE_CONTROL_DEVICE:
