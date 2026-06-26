@@ -20,7 +20,7 @@ holdFrames = 1;
 
 onCovered = undefined;
 
-inputLocked = true;
+inputLocked = false;
 
 // -----------------------------------------------------
 // Query

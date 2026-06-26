@@ -79,7 +79,7 @@ function AudioService() constructor
         
         musicAsset = _sound;
         
-        musicInstance = audio_play_sound(_sound, 0, _restart);
+        musicInstance = audio_play_sound(_sound, 0, true);
         
         return musicInstance;
     }

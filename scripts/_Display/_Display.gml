@@ -78,17 +78,30 @@ function WindowService(_windowWidth, _windowHeight, _guiWidth, _guiHeight) const
     
     static ResizeWindow = function()
     {
-        if(window_get_fullscreen()) {
-       		scale = maxScale;	
-       	}
-       	
-       	window_set_size(baseWidth * scale, baseHeight * scale);
-       	surface_resize(application_surface, baseWidth * scale, baseHeight * scale);
-       	display_set_gui_size(guiWidth, guiHeight);
-       
-       	call_later(1, time_source_units_frames, function() {
-       		window_center();
-       	});
+        if (!window_get_fullscreen())
+        {
+            window_set_size(
+                baseWidth * scale,
+                baseHeight * scale
+            );
+    
+            surface_resize(
+                application_surface,
+                baseWidth * scale,
+                baseHeight * scale
+            );
+    
+            call_later(
+                1,
+                time_source_units_frames,
+                function()
+                {
+                    window_center();
+                }
+            );
+        }
+    
+        display_set_gui_size(guiWidth, guiHeight);
     }
     
     // -----------------------------------------------------

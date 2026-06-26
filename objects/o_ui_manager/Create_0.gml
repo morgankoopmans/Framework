@@ -573,6 +573,10 @@ function Dispatch(_actionId, _payload = 0)
         case UI_ACTION.SHOW_CREDITS:
             oGamemaster.ShowCredits();
             break;    
+        
+        case UI_ACTION.RETRY_GAME:
+            oGamemaster.RequestStartGame();
+            break;
             
     }
 }

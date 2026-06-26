@@ -20,7 +20,7 @@ function DialogBlockGameplay()
         global.inputGate.Push(INPUT_CONTEXT.GAMEPLAY);
     }
     
-    oGamemaster.state = GAME_STATE.DIALOG;
+    //oGamemaster.state = GAME_STATE.DIALOG;
 }
 
 function DialogUnblockGameplay()
@@ -30,12 +30,12 @@ function DialogUnblockGameplay()
         global.inputGate.Pop(INPUT_CONTEXT.GAMEPLAY);
     }
     
-    oGamemaster.state = GAME_STATE.RUNNING;
+    //oGamemaster.state = GAME_STATE.RUNNING;
 }
 
 function DialogConfirmPressed()
 {
-    return InputPressed(INPUT_VERB.ACCEPT);
+    return UIInputPressed(INPUT_VERB.ACCEPT);
 }
 
 function DialogMakeScribble(_text, _wrapWidth = -1)
@@ -68,7 +68,7 @@ function DialogDrawScribble(_scribble, _x, _y, _typist = noone)
 
 function ShowDialog(_lines)
 {
-    var _dialog = instance_create_layer(0, 0, "Effects", o_ui_dialogbox);
+    var _dialog = instance_create_layer(0, 0, "UI", o_ui_dialogbox);
     _dialog.Open(_lines);
     return _dialog;
 }

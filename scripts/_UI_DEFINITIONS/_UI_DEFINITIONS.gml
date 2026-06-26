@@ -27,7 +27,7 @@ enum UI_ACTION
     
     SHOW_CREDITS,
     
-    REQUEST_RETRY
+    RETRY_GAME
 }
 
 enum UI_SCREEN
