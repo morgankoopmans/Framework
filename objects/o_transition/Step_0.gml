@@ -35,7 +35,7 @@ switch(state)
         break;
     
     case TRANSITION_STATE.FADING_IN:
-        timer++
+        timer++;
         
         alpha = 1 - clamp(timer / durationIn, 0, 1);
         

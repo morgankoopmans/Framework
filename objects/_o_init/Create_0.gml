@@ -1,4 +1,4 @@
-draw_set_font(fntUI_Default);
+draw_set_font(fnt_ui_default);
 
 // Initialize window service
 if(!variable_global_exists("window"))

@@ -6,7 +6,6 @@
   "inheritCreationOrder":false,
   "inheritLayers":false,
   "instanceCreationOrder":[
-    {"name":"inst_1479F72A","path":"rooms/_rm_init/_rm_init.yy",},
     {"name":"pause_btn_resume","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"pause_btn_settings","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"pause_btn_main_menu","path":"roomui/RoomUI/RoomUI.yy",},
@@ -32,18 +31,25 @@
     {"name":"controls_bind_special","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"controls_bind_map","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"controls_bind_pause","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"gameover_btn_retry","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"gameover_btn_mainmenu","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"inst_2B0F7680","path":"rooms/_rm_init/_rm_init.yy",},
+    {"name":"inst_5858BF24","path":"rooms/_rm_init/_rm_init.yy",},
+    {"name":"inst_6904C68F","path":"rooms/_rm_init/_rm_init.yy",},
   ],
   "isDnd":false,
   "layers":[
     {"$GMRInstanceLayer":"","%Name":"Instances","depth":0,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
-        {"$GMRInstance":"v4","%Name":"inst_1479F72A","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_1479F72A","objectId":{"name":"_init","path":"objects/_init/_init.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":0.0,"y":0.0,},
+        {"$GMRInstance":"v4","%Name":"inst_2B0F7680","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_2B0F7680","objectId":{"name":"o_transition","path":"objects/o_transition/o_transition.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":0.0,"y":0.0,},
+        {"$GMRInstance":"v4","%Name":"inst_5858BF24","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_5858BF24","objectId":{"name":"o_ui_manager","path":"objects/o_ui_manager/o_ui_manager.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":64.0,"y":0.0,},
+        {"$GMRInstance":"v4","%Name":"inst_6904C68F","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_6904C68F","objectId":{"name":"oGamemaster","path":"objects/oGamemaster/oGamemaster.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":32.0,"y":0.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRBackgroundLayer":"","%Name":"Background","animationFPS":15.0,"animationSpeedType":0,"colour":4278190080,"depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Background","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
   ],
   "name":"_rm_init",
   "parent":{
-    "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "name":"_Framework",
+    "path":"folders/Rooms/_Framework.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

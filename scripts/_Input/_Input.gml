@@ -111,7 +111,7 @@ function GameplayInputDown(_verb)
         return false;
     }
 
-    return InputDown(_verb);
+    return InputCheck(_verb);
 }
 
 
