@@ -2,6 +2,7 @@ mainMenuLayer = "MainMenu";
 pauseLayer = "PauseMenu";
 settingsLayer = "SettingsMenu";
 controlsLayer = "ControlsMenu";
+gameoverLayer = "GameoverMenu";
 
 confirmModalLayer = "ConfirmModal";
 
@@ -311,6 +312,7 @@ function BuildScreenRegistry()
             [
                 main_btn_start,
                 main_btn_settings,
+                main_btn_credits,
                 main_btn_quit
             ]
         );  
@@ -329,7 +331,16 @@ function BuildScreenRegistry()
                 confirmPayload = 0;
             },
             UI_NAV_AXIS.HORIZONTAL
-        )
+        );
+    
+    screens[UI_SCREEN.GAMEOVER] =
+        new UIScreen(
+            gameoverLayer,
+            [
+                gameover_btn_retry,
+                gameover_btn_mainmenu
+            ]
+        );  
     
     screensBuilt = true;
 }
@@ -559,7 +570,9 @@ function Dispatch(_actionId, _payload = 0)
             RefreshControls();
             break;
             
-            
+        case UI_ACTION.SHOW_CREDITS:
+            oGamemaster.ShowCredits();
+            break;    
             
     }
 }

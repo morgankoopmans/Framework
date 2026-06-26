@@ -6,7 +6,7 @@ function AudioService() constructor
     // -----------------------------------------------------
     
     musicAsset = -1;
-    musitcInstance = -1;
+    musicInstance = -1;
     
     // Initalize audio groups
     // TODO maybe audio groups isn't the best way to control volume, as I don't want to load all the music into memory at once
@@ -41,6 +41,7 @@ function AudioService() constructor
     
     static PlaySFX = function(_sound, _priority = 0, _gain = 1, _pitch = 1)
     {
+        
         return audio_play_sound(_sound, _priority, false, _gain, 0, _pitch);
     }
     
@@ -72,7 +73,7 @@ function AudioService() constructor
     
     static PlayMusic = function(_sound, _restart = false)
     {
-        if(!_restart and musicAsset == _sound and musitcInstance != -1 and audio_is_playing(musitcInstance)) return musitcInstance;
+        if(!_restart and musicAsset == _sound and musicInstance != -1 and audio_is_playing(musicInstance)) return musicInstance;
             
         StopMusic();
         

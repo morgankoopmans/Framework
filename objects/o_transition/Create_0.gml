@@ -66,11 +66,10 @@ FadeCallback = function(_callback, _durationOut = 12, _durationIn = 12, _holdFra
 
 FadeToRoom = function(_room, _durationOut = 12, _durationIn = 12)
 {
+    var _func = function(_rm) { room_goto(_rm); }  
+    
     return FadeCallback(
-        function()
-        {
-            room_goto(_room);
-        },
+        _func(_room),
         _durationOut,
         _durationIn
     )

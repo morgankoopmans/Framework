@@ -64,14 +64,6 @@ function Chance(_percent) {
 	return _percent > random(1);	
 }
 
-function ResetDrawGui() {
-	draw_set_font(fntDefault);	// Co-Dependant
-	draw_set_halign(fa_left);
-	draw_set_valign(fa_top);
-	draw_set_alpha(1);
-	draw_set_color(c_white);
-}
-
 function valueInRange(_value, _min, _max) {
 	if(_value > _min and _value < _max) {
 		return true;
@@ -121,4 +113,73 @@ function ShowFlexpanel(node_id)
         // layer_text_xscale(fpStructElem.elementId, 0); // or 1
         // if you have other elements besides text, you may need additional code to hide them, I just tested with text
     }
+}
+
+/// Position In Camera
+function PosInCamera(_x, _y) {
+	// Get the camera's position and dimensions for the specific view
+	var _camera_x = camera_get_view_x(view_camera[0]);
+	var _camera_y = camera_get_view_y(view_camera[0]);
+	var _view_width = camera_get_view_width(view_camera[0]);
+	var _view_height = camera_get_view_height(view_camera[0]);
+
+	
+	if( (_x > _camera_x and _x < _camera_x + _view_width) and (_y > _camera_y and _y <= _camera_y + _view_height) ) {
+		return true;	
+	} else {
+		return false;	
+	}
+}
+
+/// WorldToGUI
+function WorldPosToGuiPos(_wX, _wY) {
+
+	// Get the camera's position and dimensions for the specific view
+	var _camera_x = camera_get_view_x(view_camera[0]);
+	var _camera_y = camera_get_view_y(view_camera[0]);
+	var _view_width = camera_get_view_width(view_camera[0]);
+	var _view_height = camera_get_view_height(view_camera[0]);
+
+	// Get the GUI layer's dimensions
+	var _gui_width = display_get_gui_width();
+	var _gui_height = display_get_gui_height();
+
+	// Calculate the position of the world coordinate relative to the view's origin
+	var _room_diff_x = _wX - _camera_x;
+	var _room_diff_y = _wY - _camera_y;
+
+	// Calculate the percentage of the world coordinate within the view
+	var _view_percent_x = _room_diff_x / _view_width;
+	var _view_percent_y = _room_diff_y / _view_height;
+
+	// Convert that percentage to the GUI coordinates
+	var _gui_x = _view_percent_x * _gui_width;
+	var _gui_y = _view_percent_y * _gui_height;
+
+	// Now you can use _gui_x and _gui_y to draw in the GUI event
+	// For example, drawing a small sprite:
+	// draw_sprite(spr_your_sprite, 0, _gui_x, _gui_y);
+	
+	var _guiPos = 
+	{
+		guiX : _gui_x,
+		guiY : _gui_y
+	};
+	
+	return _guiPos;
+}
+
+function path_to_structs(path_asset) {
+    var _points = [];
+    var _count = path_get_number(path_asset);
+    
+    for (var i = 0; i < _count; i++) {
+        array_push(_points, {
+            x: path_get_point_x(path_asset, i),
+            y: path_get_point_y(path_asset, i),
+            speed: path_get_point_speed(path_asset, i)
+        });
+    }
+    
+    return _points;
 }

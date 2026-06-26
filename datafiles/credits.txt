@@ -1,0 +1,24 @@
+[#FC4C02]CREATED BY[/c]
+[scale,2]SAWED-OFF STUDIOS[scale,1]
+
+
+[#FC4C02]DESIGN AND PROGRAMMING[/c]
+Morgan Koopmans
+
+[#FC4C02]MUSIC[/c]
+Chris Freure
+
+
+[#FC4C02]-SPECIAL THANKS-[/c]
+
+[#FC4C02]ASSETS[/c]
+Ansimuz 
+Atomic Realm
+Wrabit
+
+[#FC4C02]SYSTEMS[/c]
+JuJu Adams
+Sohom Sahaun
+
+
+[wave]Thanks for playing![/wave]

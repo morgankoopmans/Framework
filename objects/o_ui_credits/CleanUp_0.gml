@@ -1,0 +1,1 @@
+scribble_anim_reset();
