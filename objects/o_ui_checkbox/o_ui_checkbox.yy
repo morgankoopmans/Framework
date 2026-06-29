@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Widgets",
-    "path":"folders/Objects/UI/Widgets.yy",
+    "path":"folders/Objects/_Framework/UI/Widgets.yy",
   },
   "parentObjectId":{
     "name":"o_ui_widget",

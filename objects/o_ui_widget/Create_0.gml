@@ -9,7 +9,11 @@ CanFocus = function()
 
 SetFocused = function(_focused)
 {
-    global.audio.PlayUIFocus();
+    if (_focused && !focused)
+    {
+        global.audio.PlayUIFocus();
+    }
+    
     focused = _focused;
 }
 
